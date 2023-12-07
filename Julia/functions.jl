@@ -189,29 +189,28 @@ module TwoBodyScattering
         size::Int64 = length(dphis_);
         @simd for i in 1:length(ranges_v_)
             v = ranges_v_[i];
+            dt::Float64 = 1/v;
             avgpdp::Vector{Float64} = zeros(size);
             totn::Vector{Float64} = zeros(size);
             deltaps::Vector{Float64} = Float64[];
-            thetatot::Vector{Float64} = Float64[]; 
+            thetatot::Vector{Float64} = Float64[];
+            dinit::Vector{Float64} = Float64[];
 
             generate!(dinit, thetatot, deltaps,
                     dphi_,
-                    gamma_, vv, lambda_, diss_,
+                    gamma_, v, lambda_, diss_,
                     dt);
-            for x in 2:size
+            for x in 1:size
                 for i in 1:length(dinit)
-                    if modulate(dinit[i]) <= rangex[x] && modulate(dinit[i]) > rangex[x-1]
+                    if modulate(dinit[i]) <= dphis_[x] && modulate(dinit[i]) > dphis_[x-1]
                         avgpdp[x]+=deltaps[i];
                         totn[x]+=1;
                     end
                 end
             end
             avgpdp = avgpdp./totn;
-            tot::Float64 = 0.0;
-            for x in 1:size
-                tot += dphi_*abs(sin(dphis_[x]/2))*avgdp[x]*v;
-            end
-            avgs_[i] = tot;
+            vs = abs.(sin.(dphis_./2)).*avgpdp;
+            avgs_[i] = dphi_*sum(vcat(vs[2:Int((size+1)/2)],vs[Int((size+1)/2)+2:end]));
         end
 
     end
