@@ -1,6 +1,6 @@
 module TwoBodyScattering
 
-    export scattering, scatteringmovie, generate!, modulate, pitick, piticklabel, calc_avg
+    export scattering, scatteringmovie, generate!, modulate, pitick, piticklabel, calc_avg!
 
     #SIMULATION-RELATED FUNCTIONS
 
@@ -181,7 +181,7 @@ module TwoBodyScattering
 
     #Function to calculate average of pdp over different values of self-propulsion speed.
 
-    function calc_avg(avgs_::Vector{Float64},
+    function calc_avg!(avgs_::Vector{Float64}, third_order_::Vector{Float64},
                         ranges_v_::Vector{Float64}, dphis_::Vector{Float64},
                         gamma_::Float64, diss_::Float64, lambda_::Float64,
                         dphi_::Float64)
@@ -210,7 +210,9 @@ module TwoBodyScattering
             end
             avgpdp = avgpdp./totn;
             vs = abs.(sin.(dphis_./2)).*avgpdp;
+            vs_t = abs.(sin.(dphis_./2)).*avgpdp.*(1/2 .- cos.(dphis_));
             avgs_[i] = dphi_*sum(vcat(vs[2:Int((size+1)/2)],vs[Int((size+1)/2)+2:end]));
+            third_order_[i] = dphi_*sum(vcat(vs_t[2:Int((size+1)/2)],vs_t[Int((size+1)/2)+2:end]));
         end
 
     end
