@@ -15,12 +15,12 @@ module TwoBodyScattering
         phi2p::Float64 = phi2;
         alpha1::Float64 = phi10_;
         alpha2::Float64 = phi20_;
-        r::Float64 = 1.0/lambda_-0.1;
+        r::Float64 = 19.0;#1.0/lambda_-0.1;
         rp::Float64 = r;
         dt_::Float64 = dtf_;
         dtt_::Float64 = dt_;
 
-        while r <= 1.0/lambda_
+        while r <= 20#1.0/lambda_
 
             rprime = diss_*exp(-lambda_*rp)/rp^4-v0_*(sin(phi1p)-sin(phi2p));
             phi1prime = -intens_*exp(-lambda_*rp)/rp^4*cos(phi1p)-v0_/rp*(cos(phi1p)-cos(phi2p));
@@ -68,7 +68,7 @@ module TwoBodyScattering
         phi2p = phi2;
         alpha1 = phi10_;
         alpha2 = phi20_;
-        r = 1.0/lambda_-1;
+        r = 19.0;#1.0/lambda_-1;
         rp = r;
         dt_ = dtf_;
         a1 = [];
@@ -82,42 +82,42 @@ module TwoBodyScattering
         push!(a1, [[pos1x,pos1y], [modul*cos(alpha1)+pos1x, -modul*sin(alpha1)+pos1y]])
         push!(a2, [[pos2x,pos2y],[modul*cos(alpha2)+pos2x, -modul*sin(alpha2)+pos2y]])
 
-        while r <= 1.0/lambda_
+        while r <= 20#.0/lambda_
 
-        rprime = diss_*exp(-lambda_*rp)/rp^4-v0_*(sin(phi1p)-sin(phi2p));
-        phi1prime = -intens_*exp(-lambda_*rp)/rp^4*cos(phi1p)-v0_/rp*(cos(phi1p)-cos(phi2p));
-        phi2prime = intens_*exp(-lambda_*rp)/rp^4*cos(phi2p)-v0_/rp*(cos(phi1p)-cos(phi2p));
-        alpha1prime = -intens_*exp(-lambda_*rp)/rp^4*cos(phi1p);
-        alpha2prime = intens_*exp(-lambda_*rp)/rp^4*cos(phi2p);
-        r += dt_*rprime;
-        if phi1 < pi/2 && phi1 > -pi/2
-        phi1 += dt_*phi1prime;#*intens_*exp(-lambda_*rp)/rp^4*cos(phi1p);
-        alpha1 += dt_*alpha1prime;
-        else
-        phi1 += dt_*phi1prime;#*intens_*exp(-lambda_*rp)/rp^4*cos(phi1p);
-        alpha1 += dt_*alpha1prime;
-        end
-        if phi2 < pi/2 && phi2 > -pi/2
-        phi2 += dt_*phi2prime;#*intens_*exp(-lambda_*rp)/rp^4*cos(phi1p);
-        alpha2 += dt_*alpha2prime;
-        else
-        phi2 += dt_*phi2prime;#*intens_*exp(-lambda_*rp)/rp^4*cos(phi1p);
-        alpha2 += dt_*alpha2prime;
-        end
+            rprime = diss_*exp(-lambda_*rp)/rp^4-v0_*(sin(phi1p)-sin(phi2p));
+            phi1prime = -intens_*exp(-lambda_*rp)/rp^4*cos(phi1p)-v0_/rp*(cos(phi1p)-cos(phi2p));
+            phi2prime = intens_*exp(-lambda_*rp)/rp^4*cos(phi2p)-v0_/rp*(cos(phi1p)-cos(phi2p));
+            alpha1prime = -intens_*exp(-lambda_*rp)/rp^4*cos(phi1p);
+            alpha2prime = intens_*exp(-lambda_*rp)/rp^4*cos(phi2p);
+            r += dt_*rprime;
+            if phi1 < pi/2 && phi1 > -pi/2
+            phi1 += dt_*phi1prime;#*intens_*exp(-lambda_*rp)/rp^4*cos(phi1p);
+            alpha1 += dt_*alpha1prime;
+            else
+            phi1 += dt_*phi1prime;#*intens_*exp(-lambda_*rp)/rp^4*cos(phi1p);
+            alpha1 += dt_*alpha1prime;
+            end
+            if phi2 < pi/2 && phi2 > -pi/2
+            phi2 += dt_*phi2prime;#*intens_*exp(-lambda_*rp)/rp^4*cos(phi1p);
+            alpha2 += dt_*alpha2prime;
+            else
+            phi2 += dt_*phi2prime;#*intens_*exp(-lambda_*rp)/rp^4*cos(phi1p);
+            alpha2 += dt_*alpha2prime;
+            end
 
-        phi1 = modulate(phi1);
-        phi2 = modulate(phi2);
-        alpha1 = modulate(alpha1);
-        alpha2 = modulate(alpha2);
-        pos1x += dt_*v0_*cos(alpha1);
-        pos1y += -dt_*v0_*sin(alpha1);
-        pos2x += dt_*v0_*cos(alpha2);
-        pos2y += -dt_*v0_*sin(alpha2);
-        push!(a1, [[pos1x,pos1y], [modul*cos(alpha1)+pos1x, -modul*sin(alpha1)+pos1y]])
-        push!(a2, [[pos2x,pos2y],[modul*cos(alpha2)+pos2x, -modul*sin(alpha2)+pos2y]])
-        phi1p = phi1;
-        phi2p = phi2;
-        rp = r;
+            phi1 = modulate(phi1);
+            phi2 = modulate(phi2);
+            alpha1 = modulate(alpha1);
+            alpha2 = modulate(alpha2);
+            pos1x += dt_*v0_*cos(alpha1);
+            pos1y += -dt_*v0_*sin(alpha1);
+            pos2x += dt_*v0_*cos(alpha2);
+            pos2y += -dt_*v0_*sin(alpha2);
+            push!(a1, [[pos1x,pos1y], [modul*cos(alpha1)+pos1x, -modul*sin(alpha1)+pos1y]])
+            push!(a2, [[pos2x,pos2y],[modul*cos(alpha2)+pos2x, -modul*sin(alpha2)+pos2y]])
+            phi1p = phi1;
+            phi2p = phi2;
+            rp = r;
         end
 
         return (cos(phi10_)+cos(phi20_))*(cos(alpha1)+cos(alpha2)-cos(phi10_)-cos(phi20_))+
@@ -133,8 +133,9 @@ module TwoBodyScattering
 
         for p1 in -(pi-dphi_):dphi_:(pi-dphi_)
             for p2 in -(pi-dphi_):dphi_:(pi-dphi_)
-                if p1 == pi/2 && p2 == pi/2 || p1 == -pi/2 && p2 == -pi/2 || p1 == pi/2 && p2 == -pi/2
-                    continue
+                #Skip loop if particles are in patological configuration
+                if p1 < pi/2+dphi_ && p1 > pi/2-dphi_ && p2 < pi/2+dphi_ && p2 > pi/2-dphi_ || p1 < pi/2+dphi_ && p1 > pi/2-dphi_ && p2 < -pi/2+dphi_ && p2 > -pi/2-dphi_ || p1 < -pi/2+dphi_ && p1 > -pi/2-dphi_ && p2 < -pi/2+dphi_ && p2 > -pi/2-dphi_
+                    continue;
                 end
                 if (sin(p1)-sin(p2)) > 0 
                     push!(dinit_, p1-p2);
@@ -189,13 +190,14 @@ module TwoBodyScattering
         size::Int64 = length(dphis_);
         @simd for i in 1:length(ranges_v_)
             v = ranges_v_[i];
-            dt::Float64 = 1/v;
+            dt::Float64 = 1/(100*v);
             avgpdp::Vector{Float64} = zeros(size);
             totn::Vector{Float64} = zeros(size);
             deltaps::Vector{Float64} = Float64[];
             thetatot::Vector{Float64} = Float64[];
             dinit::Vector{Float64} = Float64[];
-
+            
+            print("Velocity: ", v, " with dt: ", dt, "\n")
             generate!(dinit, thetatot, deltaps,
                     dphi_,
                     gamma_, v, lambda_, diss_,
