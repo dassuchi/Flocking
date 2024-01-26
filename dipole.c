@@ -348,7 +348,7 @@ int main(int argc, char **argv){
             if(particle[m].y>=boxsize_y) {particle[m].y-=boxsize_y;}
 
             //Print every 10000th iteration
-            if(countloop%15000==0){
+            if(countloop%10000==0){
 
                 fprintf(fp2,"%lf\t%lf\t%lf\n",particle[m].x,
                                     particle[m].y,particle[m].theta);
