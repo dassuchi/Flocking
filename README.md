@@ -1,7 +1,7 @@
 <<<<<<< HEAD
 # Flocking
 
-First parameter files have to be generated using ./test_param.sh
+For Brownian dynamics simulation: First parameter files have to be generated using ./test_param.sh
 
 Command for compilation : gcc -O3 dipole.c -lm -o dipole.out
 
